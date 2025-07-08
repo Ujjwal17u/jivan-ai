@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import ChatInterface from "@/components/ChatInterface";
 import ReligionCard from "@/components/ReligionCard";
+import jivanLogo from "@/assets/jivan-ai-logo.png";
 
 export type Religion = 'hindu' | 'muslim' | 'sikh' | 'christian';
 
@@ -66,19 +67,30 @@ const Index = () => {
 
       <div className="relative z-10 container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="text-center mb-12 animate-fade-in">
-          <div className="inline-block mb-4">
-            <Badge variant="secondary" className="text-lg px-6 py-2 bg-white/80 backdrop-blur-sm">
-              🕊️ Spiritual AI Assistant
-            </Badge>
+        <div className="relative mb-12 animate-fade-in">
+          {/* Logo */}
+          <div className="absolute top-0 right-0">
+            <img 
+              src={jivanLogo} 
+              alt="Jivan AI Logo" 
+              className="w-20 h-20 object-contain"
+            />
           </div>
-          <h1 className="text-6xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-teal-600 bg-clip-text text-transparent mb-4">
-            Jivan AI
-          </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Your compassionate spiritual companion. Choose your faith tradition to begin a personalized, 
-            culturally respectful conversation in a safe space designed for your spiritual journey.
-          </p>
+          
+          <div className="text-center">
+            <div className="inline-block mb-4">
+              <Badge variant="secondary" className="text-lg px-6 py-2 bg-white/80 backdrop-blur-sm">
+                🕊️ Spiritual AI Assistant
+              </Badge>
+            </div>
+            <h1 className="text-6xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-teal-600 bg-clip-text text-transparent mb-4">
+              Jivan AI
+            </h1>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              Your compassionate spiritual companion. Choose your faith tradition to begin a personalized, 
+              culturally respectful conversation in a safe space designed for your spiritual journey.
+            </p>
+          </div>
         </div>
 
         {/* Religion Selection Cards */}
