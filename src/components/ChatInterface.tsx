@@ -98,10 +98,13 @@ const ChatInterface = ({ religion, onBack }: ChatInterfaceProps) => {
 
       const data = await response.json();
       
-      let aiText = `Thank you for sharing that with me. In ${theme.faithName} tradition, we find strength in community and wisdom in reflection. ${theme.spiritualGuidance}`;
+      let aiText = '';
       
       if (data.candidates && data.candidates[0] && data.candidates[0].content) {
         aiText = data.candidates[0].content.parts[0].text;
+      } else {
+        // Only use fallback if API doesn't return proper response
+        aiText = `Thank you for sharing that with me. In ${theme.faithName} tradition, we find strength in community and wisdom in reflection. ${theme.spiritualGuidance}`;
       }
       
       const aiResponse: Message = {
