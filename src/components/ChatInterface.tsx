@@ -58,12 +58,39 @@ const ChatInterface = ({ religion, onBack }: ChatInterfaceProps) => {
     setIsLoading(true);
 
     try {
-      // Simulate AI response (replace with actual Gemini API call)
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Call Gemini API
+      const geminiApiKey = "AIzaSyDkxkNntHI-EHZiosVlcjqNHncraJaC92g";
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${geminiApiKey}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: `You are a spiritual AI assistant for ${theme.faithName} faith. Respond with compassion, wisdom, and cultural sensitivity. User's message: ${inputValue}`
+            }]
+          }],
+          generationConfig: {
+            temperature: 0.7,
+            topK: 40,
+            topP: 0.95,
+            maxOutputTokens: 1024,
+          }
+        })
+      });
+
+      const data = await response.json();
+      
+      let aiText = `Thank you for sharing that with me. In ${theme.faithName} tradition, we find strength in community and wisdom in reflection. ${theme.spiritualGuidance}`;
+      
+      if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+        aiText = data.candidates[0].content.parts[0].text;
+      }
       
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: `Thank you for sharing that with me. In ${theme.faithName} tradition, we find strength in community and wisdom in reflection. Your feelings are valid, and seeking guidance shows great courage. ${theme.spiritualGuidance}`,
+        text: aiText,
         isUser: false,
         timestamp: new Date()
       };
@@ -71,6 +98,14 @@ const ChatInterface = ({ religion, onBack }: ChatInterfaceProps) => {
       setMessages(prev => [...prev, aiResponse]);
     } catch (error) {
       console.error('Error sending message:', error);
+      // Fallback response
+      const fallbackResponse: Message = {
+        id: (Date.now() + 1).toString(),
+        text: `I'm here to listen and support you. In ${theme.faithName} tradition, we find strength in community and reflection. ${theme.spiritualGuidance}`,
+        isUser: false,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, fallbackResponse]);
     } finally {
       setIsLoading(false);
     }
