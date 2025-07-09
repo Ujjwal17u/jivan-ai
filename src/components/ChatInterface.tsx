@@ -64,7 +64,19 @@ const ChatInterface = ({ religion, onBack }: ChatInterfaceProps) => {
     try {
       // Call Gemini API
       const geminiApiKey = "AIzaSyDkxkNntHI-EHZiosVlcjqNHncraJaC92g";
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${geminiApiKey}`, {
+      
+      // Get religion-specific spiritual text guidance
+      const getPromptForReligion = (religion: string, message: string) => {
+        const prompts = {
+          Hindu: `You are a compassionate spiritual guide rooted in Hindu wisdom. Draw from the Bhagavad Gita, Upanishads, and Vedic teachings. Provide guidance with Sanskrit verses when appropriate, explaining their meaning. Always respond with love, dharma, and understanding. User's message: ${message}`,
+          Muslim: `You are a compassionate spiritual guide rooted in Islamic wisdom. Draw from the Holy Quran and Hadith. Include relevant Quranic verses (ayahs) with their translations when appropriate. Always respond with mercy, guidance from Allah (SWT), and understanding. User's message: ${message}`,
+          Christian: `You are a compassionate spiritual guide rooted in Christian faith. Draw from the Holy Bible (Old and New Testament). Include relevant biblical verses when appropriate, explaining their context. Always respond with love, grace, and understanding. User's message: ${message}`,
+          Sikh: `You are a compassionate spiritual guide rooted in Sikh wisdom. Draw from Guru Granth Sahib and teachings of the Gurus. Include relevant Gurbani verses when appropriate, explaining their meaning. Always respond with love, seva, and understanding. User's message: ${message}`
+        };
+        return prompts[religion as keyof typeof prompts] || prompts.Hindu;
+      };
+
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,7 +84,7 @@ const ChatInterface = ({ religion, onBack }: ChatInterfaceProps) => {
         body: JSON.stringify({
           contents: [{
             parts: [{
-              text: `You are a spiritual AI assistant for ${theme.faithName} faith. Respond with compassion, wisdom, and cultural sensitivity. User's message: ${inputValue}`
+              text: getPromptForReligion(theme.faithName, inputValue)
             }]
           }],
           generationConfig: {
