@@ -25,19 +25,23 @@ const ChatInterface = ({ religion, onBack }: ChatInterfaceProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [welcomeMessageAdded, setWelcomeMessageAdded] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const theme = getReligionTheme(religion);
 
   useEffect(() => {
-    // Add welcome message
-    const welcomeMessage: Message = {
-      id: 'welcome',
-      text: `${theme.greeting}! Welcome to your spiritual sanctuary. I'm here to listen, support, and provide guidance rooted in ${theme.faithName} wisdom. Feel free to share what's on your heart - this is a safe, judgment-free space for you.`,
-      isUser: false,
-      timestamp: new Date()
-    };
-    setMessages([welcomeMessage]);
-  }, [religion, theme]);
+    // Add welcome message only once
+    if (!welcomeMessageAdded) {
+      const welcomeMessage: Message = {
+        id: 'welcome',
+        text: `${theme.greeting}! Welcome to your spiritual sanctuary. I'm here to listen, support, and provide guidance rooted in ${theme.faithName} wisdom. Feel free to share what's on your heart - this is a safe, judgment-free space for you.`,
+        isUser: false,
+        timestamp: new Date()
+      };
+      setMessages([welcomeMessage]);
+      setWelcomeMessageAdded(true);
+    }
+  }, [theme.greeting, theme.faithName, welcomeMessageAdded]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
