@@ -114,10 +114,22 @@ const ChatInterface = ({ religion, onBack }: ChatInterfaceProps) => {
       setMessages(prev => [...prev, aiResponse]);
     } catch (error) {
       console.error('Error sending message:', error);
+      
+      // Religion-specific fallback responses
+      const getFallbackResponse = (religion: string) => {
+        const fallbacks = {
+          Hindu: `श्री कृष्ण कहते हैं - "योगस्थः कुरु कर्माणि" (गीता 2.48)\nअर्थ: समभाव में स्थित होकर कर्म करो।\nआपकी समस्या का समाधान धैर्य और कर्म में है। शांत रहें।`,
+          Muslim: `अल्लाह (SWT) कहते हैं - "और जो अल्लाह पर भरोसा रखता है, वह उसके लिए काफी है" (कुरान 65:3)\nअर्थ: अल्लाह पर पूर्ण विश्वास रखें।\nआपकी परेशानी अस्थायी है। दुआ करें और सब्र रखें।`,
+          Christian: `यीशु मसीह कहते हैं - "आओ मेरे पास, तुम सब जो परेशान हो" (मत्ती 11:28)\nअर्थ: ईसा मसीह आपको आराम देंगे।\nप्रार्थना करें और विश्वास रखें। ईश्वर आपके साथ है।`,
+          Sikh: `गुरु साहिब कहते हैं - "सभ कुछ तेरे हाथ में है" (गुरु ग्रंथ साहिब, पन्ना 97)\nअर्थ: सब कुछ वाहेगुरु के हाथ में है।\nनाम जपो और सेवा करो। गुरु आपका साथ देंगे।`
+        };
+        return fallbacks[religion as keyof typeof fallbacks] || fallbacks.Hindu;
+      };
+      
       // Fallback response
       const fallbackResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: `I'm here to listen and support you. In ${theme.faithName} tradition, we find strength in community and reflection. ${theme.spiritualGuidance}`,
+        text: getFallbackResponse(theme.faithName),
         isUser: false,
         timestamp: new Date()
       };
