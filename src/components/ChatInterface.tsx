@@ -68,10 +68,10 @@ const ChatInterface = ({ religion, onBack }: ChatInterfaceProps) => {
       // Get religion-specific spiritual text guidance
       const getPromptForReligion = (religion: string, message: string) => {
         const prompts = {
-          Hindu: `You are a spiritual guide. Give SHORT, concise answers. Format: 1) Specific verse from Bhagavad Gita/Upanishads with chapter/verse number 2) English meaning 3) Brief answer to user's question (max 3 lines). User's message: ${message}`,
-          Muslim: `You are a spiritual guide. Give SHORT, concise answers. Format: 1) Specific Quranic verse with Surah:Ayah reference 2) English translation 3) Brief answer to user's question (max 3 lines). User's message: ${message}`,
-          Christian: `You are a spiritual guide. Give SHORT, concise answers. Format: 1) Specific Bible verse with Book Chapter:Verse reference 2) Verse meaning 3) Brief answer to user's question (max 3 lines). User's message: ${message}`,
-          Sikh: `You are a spiritual guide. Give SHORT, concise answers. Format: 1) Specific Gurbani verse from Guru Granth Sahib with page number 2) English meaning 3) Brief answer to user's question (max 3 lines). User's message: ${message}`
+          Hindu: `RESPOND IN THE SAME LANGUAGE AS USER'S MESSAGE. Follow this exact format: "श्री कृष्ण कहते हैं..." then give specific Bhagavad Gita verse with chapter:verse number, then explain meaning, then provide solution to their problem. Keep response SHORT (max 4 lines total). User's message: ${message}`,
+          Muslim: `RESPOND IN THE SAME LANGUAGE AS USER'S MESSAGE. Follow this exact format: "अल्लाह (SWT) कहते हैं..." then give specific Quranic verse with Surah:Ayah reference, then explain meaning, then provide solution to their problem. Keep response SHORT (max 4 lines total). User's message: ${message}`,
+          Christian: `RESPOND IN THE SAME LANGUAGE AS USER'S MESSAGE. Follow this exact format: "यीशु मसीह कहते हैं..." then give specific Bible verse with Book Chapter:Verse reference, then explain meaning, then provide solution to their problem. Keep response SHORT (max 4 lines total). User's message: ${message}`,
+          Sikh: `RESPOND IN THE SAME LANGUAGE AS USER'S MESSAGE. Follow this exact format: "गुरु साहिब कहते हैं..." then give specific Gurbani verse from Guru Granth Sahib with page number, then explain meaning, then provide solution to their problem. Keep response SHORT (max 4 lines total). User's message: ${message}`
         };
         return prompts[religion as keyof typeof prompts] || prompts.Hindu;
       };
